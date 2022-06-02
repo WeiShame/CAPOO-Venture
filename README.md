@@ -3,7 +3,7 @@ CAPOO in mario world at red-white version
 
 # Design
 **Resolution**: 960*720 (4:3)  
-**Game rule**: Same with the Mario (red-white version)
+**Game rule**: Same with the Mario (red-white version)  
 **Blocks:** Width: 16 blocks (60px), Height: 15 blocks (48px)
 
 **Development Flow:**
