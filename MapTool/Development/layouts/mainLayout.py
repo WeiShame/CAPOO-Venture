@@ -8,11 +8,13 @@
 **************************************************************"""
 #======import part=================================================================================
 import sys
+from tkinter import Label
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QWidget, QLabel, QMainWindow, QHBoxLayout, QVBoxLayout, QGridLayout, QLineEdit
 from PyQt5.QtWidgets import QDesktopWidget
 from PyQt5.QtGui import QIcon, QPalette, QColor, QFont
 from PyQt5.QtCore import pyqtSlot, Qt
+from layouts.MaterialBox import myMaterialBox
 
 #==================================================================================================
 #======variable declare============================================================================
@@ -22,12 +24,14 @@ class myMainLayout(QMainWindow):
         #===========variable==============================================
         self.window_width = 1080
         self.window_height = 720
-
+        self.materialBox = myMaterialBox()
 
         self.mainframe = QWidget()      # It need a central widget for mainwidow.
 
+        self.boxLabel = QLabel("Material Box")
+        self.mapLabel = QLabel("Map")
         # layouts Initial
-        self.G_layout = QGridLayout()
+        self.gridLayout = QGridLayout()
         #*****************************************************************
         #-----Widgets Initial setting-------------------------------------
         self.setWindowTitle('Map Tool')    # set window title
@@ -40,13 +44,23 @@ class myMainLayout(QMainWindow):
         labelfont.setPointSize(16)
         labelfont.setBold(True)
 
+        self.boxLabel.setFont(labelfont)
+        self.mapLabel.setFont(labelfont)
 
         #--------------------------------
         
         #*****************************************************************
         #-----layout setting----------------------------------------------
+        self.setCentralWidget(self.mainframe)
 
+        #self.gridLayout.setColumnStretch(3,1)
 
+        self.gridLayout.addWidget(self.boxLabel, 0, 0, 1, 1, Qt.AlignLeft)
+        self.gridLayout.addWidget(self.mapLabel, 0, 3, 1, 1)
+        self.gridLayout.addWidget(self.materialBox,1,0,9,2)
+        self.gridLayout.addWidget(self.materialBox.materialBlockLabel ,4,1)
+
+        self.mainframe.setLayout(self.gridLayout)
         #*****************************************************************
         #-----button link setting-----------------------------------------
         
