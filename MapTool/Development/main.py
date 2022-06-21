@@ -23,10 +23,9 @@ if __name__ == "__main__":
     app = QtWidgets.QApplication(sys.argv)
     window = myMainLayout()
     window.show()
-
     #************************************************
     #-----Initial------------------------------------------------------
-
+    window.materialBox.checkMaterials()
 
     # -----for UI update-----
     sys.exit(app.exec_())

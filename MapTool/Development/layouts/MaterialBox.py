@@ -12,8 +12,8 @@ from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QVBoxLayout, QGridLayout, QLineEdit, QTabWidget
 from PyQt5.QtWidgets import QDesktopWidget
 from PyQt5.QtGui import QIcon, QPalette, QColor, QFont, QPixmap
-from PyQt5.QtCore import pyqtSlot, Qt
-import os
+from PyQt5.QtCore import pyqtSlot, Qt, QSize
+import os, glob
 
 
 #==================================================================================================
@@ -26,6 +26,10 @@ class myMaterialBox(QTabWidget):
         self.monsterLabel = "Monster"
         self.materialForm = QWidget()
         self.monsterForm = QWidget()
+        self.blockSize = QSize(60, 48)
+        self.materialImages = []
+
+        self.mapMaterials = glob.glob("Images/Materialss/*.png")
 
         self.materialBlockLabel = QLabel()
         self.materialBlockPixmap = QPixmap("Images/block1.png")
@@ -35,27 +39,33 @@ class myMaterialBox(QTabWidget):
 
         #-----layouts Initial-----
         self.materialFormGridLayout = QGridLayout()
-        print(os.path.dirname(os.path.abspath(__file__)))
         
         #*****************************************************************
         #-----Widgets Initial setting-------------------------------------
-        self.setBackgroundColor(QColor(255, 255, 255))
+        #-----load material images-----
+        for image_str in self.mapMaterials:
+            materialPixmap = QPixmap(image_str)
+            materialBlockLabel = QLabel()
+            materialBlockLabel.setPixmap(materialPixmap)
+            materialBlockLabel.resize(self.blockSize)
 
-        self.materialBlockLabel.setPixmap(self.materialBlockPixmap)
-        self.materialBlockLabel.resize(60,48)
+            self.materialImages.append(materialBlockLabel)
 
-        self.materialQuestionLabel.setPixmap(self.materialQuestionPixmap)
-        self.materialQuestionLabel.resize(60,48)
         #--------------------------------
-        
+        self.setBackgroundColor(self.materialForm, Qt.gray)
+        self.setBackgroundColor(self.monsterForm, Qt.cyan)
+
         #*****************************************************************
         #-----layout setting----------------------------------------------
         self.addTab(self.materialForm, self.materiaLabel)
         self.addTab(self.monsterForm, self.monsterLabel)
         
-        self.materialFormGridLayout.addWidget(self.materialBlockLabel, 0, 0)
-        self.materialFormGridLayout.addWidget(self.materialQuestionLabel, 0, 1)
-        self.materialFormGridLayout.setRowStretch(1,4)
+        for index, materialImageLabel in enumerate(self.materialImages):
+            self.materialFormGridLayout.addWidget(materialImageLabel, index/2, index % 2)
+
+        if self.materialFormGridLayout.rowCount() < 5:
+            self.materialFormGridLayout.setRowStretch(self.materialFormGridLayout.rowCount(), 1)
+
 
         self.materialForm.setLayout(self.materialFormGridLayout)
 
@@ -70,7 +80,13 @@ class myMaterialBox(QTabWidget):
         
         
     #=====================================================================
-    def setBackgroundColor(self, color):
+    def setBackgroundColor(self, widget, color):
+        widget.setAutoFillBackground(True)
         pal = QPalette()
-        pal.setColor(self.backgroundRole(), color)
-        self.setPalette(pal)
+        pal.setColor(widget.backgroundRole(), color)
+        widget.setPalette(pal)
+    #=====================================================================
+    def checkMaterials(self):
+        if len(self.mapMaterials) == 0:
+            error_dialog = QtWidgets.QMessageBox.critical(self,"ERROR!", "Not Found Materials Error!")
+            self.close()

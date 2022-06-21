@@ -15,6 +15,7 @@ from PyQt5.QtWidgets import QDesktopWidget
 from PyQt5.QtGui import QIcon, QPalette, QColor, QFont
 from PyQt5.QtCore import pyqtSlot, Qt
 from layouts.MaterialBox import myMaterialBox
+from layouts.MapEditWindow import myMapEditWindow
 
 #==================================================================================================
 #======variable declare============================================================================
@@ -25,6 +26,7 @@ class myMainLayout(QMainWindow):
         self.window_width = 1080
         self.window_height = 720
         self.materialBox = myMaterialBox()
+        self.mapEditWindow = myMapEditWindow()
 
         self.mainframe = QWidget()      # It need a central widget for mainwidow.
 
@@ -55,11 +57,11 @@ class myMainLayout(QMainWindow):
 
         #self.gridLayout.setColumnStretch(3,1)
 
-        self.gridLayout.addWidget(self.boxLabel, 0, 0, 1, 1, Qt.AlignLeft)
-        self.gridLayout.addWidget(self.mapLabel, 0, 3, 1, 1)
+        self.gridLayout.addWidget(self.boxLabel, 0, 0, Qt.AlignLeft)
+        self.gridLayout.addWidget(self.mapLabel, 0, 3)
         self.gridLayout.addWidget(self.materialBox,1,0,9,2)
-        self.gridLayout.addWidget(self.materialBox.materialBlockLabel ,4,1)
-
+        self.gridLayout.addWidget(self.mapEditWindow, 1, 3, 9, 7)
+        
         self.mainframe.setLayout(self.gridLayout)
         #*****************************************************************
         #-----button link setting-----------------------------------------
