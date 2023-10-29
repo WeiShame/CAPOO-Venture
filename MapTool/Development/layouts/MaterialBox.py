@@ -11,9 +11,10 @@ import sys
 from PyQt5 import QtWidgets
 from PyQt5.QtWidgets import QWidget, QLabel, QHBoxLayout, QVBoxLayout, QGridLayout, QLineEdit, QTabWidget
 from PyQt5.QtWidgets import QDesktopWidget
-from PyQt5.QtGui import QIcon, QPalette, QColor, QFont, QPixmap
+from PyQt5.QtGui import QIcon, QPalette, QColor, QFont, QPixmap, QMouseEvent
 from PyQt5.QtCore import pyqtSlot, Qt, QSize
 import os, glob
+from layouts.ClickableLabel import myClickableLabel
 
 
 #==================================================================================================
@@ -27,15 +28,12 @@ class myMaterialBox(QTabWidget):
         self.materialForm = QWidget()
         self.monsterForm = QWidget()
         self.blockSize = QSize(60, 48)
-        self.materialImages = []
+        self.materialLabels = []
 
-        self.mapMaterials = glob.glob("Images/Materialss/*.png")
+        self.selectTemp = myClickableLabel()
 
-        self.materialBlockLabel = QLabel()
-        self.materialBlockPixmap = QPixmap("Images/block1.png")
- 
-        self.materialQuestionLabel = QLabel()
-        self.materialQuestionPixmap = QPixmap("Images/question.png")
+        self.mapMaterials = glob.glob("Images/Materials/*.png")
+
 
         #-----layouts Initial-----
         self.materialFormGridLayout = QGridLayout()
@@ -45,11 +43,15 @@ class myMaterialBox(QTabWidget):
         #-----load material images-----
         for image_str in self.mapMaterials:
             materialPixmap = QPixmap(image_str)
-            materialBlockLabel = QLabel()
+            materialBlockLabel = myClickableLabel()
             materialBlockLabel.setPixmap(materialPixmap)
             materialBlockLabel.resize(self.blockSize)
 
-            self.materialImages.append(materialBlockLabel)
+            materialBlockLabel.click_connect(self.materialClicked)
+
+
+            self.materialLabels.append(materialBlockLabel)            
+       
 
         #--------------------------------
         self.setBackgroundColor(self.materialForm, Qt.gray)
@@ -60,14 +62,15 @@ class myMaterialBox(QTabWidget):
         self.addTab(self.materialForm, self.materiaLabel)
         self.addTab(self.monsterForm, self.monsterLabel)
         
-        for index, materialImageLabel in enumerate(self.materialImages):
-            self.materialFormGridLayout.addWidget(materialImageLabel, index/2, index % 2)
+        for index, materialImageLabel in enumerate(self.materialLabels):
+            self.materialFormGridLayout.addWidget(materialImageLabel, int(index/2), int(index % 2))
 
         if self.materialFormGridLayout.rowCount() < 5:
             self.materialFormGridLayout.setRowStretch(self.materialFormGridLayout.rowCount(), 1)
 
 
         self.materialForm.setLayout(self.materialFormGridLayout)
+    
 
         
 
@@ -90,3 +93,11 @@ class myMaterialBox(QTabWidget):
         if len(self.mapMaterials) == 0:
             error_dialog = QtWidgets.QMessageBox.critical(self,"ERROR!", "Not Found Materials Error!")
             self.close()
+    #=====================================================================
+    def materialClicked(self):
+        sender_label = self.sender()
+        self.selectTemp.unSelected()
+        sender_label.selected()
+        self.selectTemp=sender_label
+        
+        

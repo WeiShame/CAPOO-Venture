@@ -27,6 +27,9 @@ if __name__ == "__main__":
     #-----Initial------------------------------------------------------
     window.materialBox.checkMaterials()
 
+    #set fixed size because of border will change the size
+    window.materialBox.setFixedSize(window.materialBox.geometry().width(), window.materialBox.geometry().height())
+
     # -----for UI update-----
     sys.exit(app.exec_())
     #************************************************

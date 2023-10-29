@@ -1,6 +1,6 @@
 """**************************************************************
 *   Desciribe:                                                  *
-*       The main form of my Map tool.         s                  *
+*       The main form of my Map tool.                           *
 *                                                               *
 *   Date    : 2021/06/06                                        *
 *   Author  : YongHong, Liu                                     *
@@ -63,6 +63,9 @@ class myMainLayout(QMainWindow):
         self.gridLayout.addWidget(self.mapEditWindow, 1, 3, 9, 7)
         
         self.mainframe.setLayout(self.gridLayout)
+        
+        #get object size
+        
         #*****************************************************************
         #-----button link setting-----------------------------------------
         
@@ -75,7 +78,9 @@ class myMainLayout(QMainWindow):
     def setWindow2Center(self):
         screenSize = QDesktopWidget().screenGeometry()  # get screen size
         print("Sw: ", screenSize.width(), "Sh: ", screenSize.height())
-        self.setGeometry((screenSize.width() - self.window_width) /2 , (screenSize.height() - self.window_height) / 2, self.window_width, self.window_height)    
+        centerX=int((screenSize.width() - self.window_width) / 2)
+        centerY=int((screenSize.height() - self.window_height) / 2)
+        self.setGeometry( centerX, centerY, self.window_width, self.window_height)    
 
     #*****************************************************************
     def setBackgroundColor(self, color):
