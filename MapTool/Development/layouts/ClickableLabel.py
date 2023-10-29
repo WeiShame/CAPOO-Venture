@@ -9,7 +9,7 @@
 #======import part=================================================================================
 import sys
 from PyQt5 import QtWidgets
-from PyQt5.QtWidgets import QWidget, QLabel
+from PyQt5.QtWidgets import QWidget, QLabel, QGraphicsOpacityEffect
 from PyQt5.QtCore import pyqtSlot, pyqtSignal
 import os, glob
 from PyQt5.QtCore import *
@@ -26,17 +26,33 @@ class myClickableLabel(QLabel):
         #===========variable==============================================
     def mouseReleaseEvent(self, event):
         self.clickSignal.emit()
+
     #*********************************************
     def click_connect(self,func):
         self.clickSignal.connect(func)
+
     #*********************************************
     def selected(self):
-          self.setStyleSheet("border: 3px solid black;")
+        self.setStyleSheet("border: 3px solid black;")
+
     #*********************************************
     def unSelected(self):
-          self.setStyleSheet("border: 0px") 
-    
+        self.setStyleSheet("border: 0px") 
 
+    #*********************************************
+    def setBorder(self, borderSize):
+         self.setStyleSheet("border: {borderSize}px solid black;") 
+    #*********************************************
+    def setBackgroundColor(self, widget, color):
+        widget.setAutoFillBackground(True)
+        pal = QPalette()
+        pal.setColor(widget.backgroundRole(), color)
+        widget.setPalette(pal)
+    #*********************************************
+    # def setOpacity(self, value):
+    #     opacity = QGraphicsOpacityEffect().setOpacity(value)
+    #     self.setGraphicsEffect(opacity)
+    #     self.setOpacity()
         
 
         

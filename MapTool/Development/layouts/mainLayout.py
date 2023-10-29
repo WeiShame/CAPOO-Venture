@@ -41,6 +41,8 @@ class myMainLayout(QMainWindow):
         self.setFixedSize(self.window_width, self.window_height) # Fixed the size of window
         self.setBackgroundColor(QColor(255, 240, 195))
 
+        self.mapEditWindow.setBackgroundimage("Images/Background/super_mario_background_hd.png")
+
         #----- Settting lables font -----
         labelfont = QFont()
         labelfont.setPointSize(16)
